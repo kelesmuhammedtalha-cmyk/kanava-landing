@@ -607,6 +607,17 @@ var CONFIG = {
     syncLabel();
   });
 
+  /* The theme can also change from outside this script - the OS switching
+     mode, or a browser/extension stamping data-theme after load. Re-read the
+     real state instead of trusting the label we wrote at startup. */
+  new MutationObserver(syncLabel).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"]
+  });
+  var mq = window.matchMedia("(prefers-color-scheme: light)");
+  if (mq.addEventListener) { mq.addEventListener("change", syncLabel); }
+  else if (mq.addListener) { mq.addListener(syncLabel); }
+
   function wire(formId, msgId) {
     var form = document.getElementById(formId);
     if (!form) { return; }
