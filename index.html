@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KANAVA</title>
+<meta name="description" content="A production line for faceless YouTube channels - topic to publish kit, with your channel's memory baked in. Built in public by one person.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* KANAVA landing
+   "kanava" = the woven grid you stitch a repeating pattern onto.
+   Dark-first, because the product's own UI defaults to dark. */
+
+:root {
+  --ground:      #131620;
+  --surface:     #1A1E2B;
+  --surface-2:   #212636;
+  --weave:       #2A3044;
+  --line:        #2E3448;
+  --ink:         #EDEAE3;
+  --ink-soft:    #A6ABBC;
+  --ink-faint:   #71778C;
+  --thread:      #D14539;
+  --thread-soft: #E9827A;
+  --thread-dim:  rgba(209, 69, 57, 0.14);
+  --ok:          #6FBF8B;
+  --shadow:      0 1px 0 rgba(255,255,255,.03), 0 18px 40px -28px rgba(0,0,0,.9);
+
+  --step: clamp(1.05rem, 0.9rem + 0.7vw, 1.15rem);
+  --measure: 62ch;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --ground:      #EDEBE5;
+    --surface:     #F6F4EF;
+    --surface-2:   #FFFFFF;
+    --weave:       #D8D4CA;
+    --line:        #D3CFC4;
+    --ink:         #1B1D24;
+    --ink-soft:    #4E5260;
+    --ink-faint:   #7B7F8C;
+    --thread:      #B3352A;
+    --thread-soft: #8F2A21;
+    --thread-dim:  rgba(179, 53, 42, 0.10);
+    --ok:          #2F7D51;
+    --shadow:      0 1px 0 rgba(255,255,255,.7), 0 16px 34px -30px rgba(27,29,36,.45);
+  }
+}
+:root[data-theme="light"] {
+  --ground:      #EDEBE5;
+  --surface:     #F6F4EF;
+  --surface-2:   #FFFFFF;
+  --weave:       #D8D4CA;
+  --line:        #D3CFC4;
+  --ink:         #1B1D24;
+  --ink-soft:    #4E5260;
+  --ink-faint:   #7B7F8C;
+  --thread:      #B3352A;
+  --thread-soft: #8F2A21;
+  --thread-dim:  rgba(179, 53, 42, 0.10);
+  --ok:          #2F7D51;
+  --shadow:      0 1px 0 rgba(255,255,255,.7), 0 16px 34px -30px rgba(27,29,36,.45);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Archivo", "Segoe UI", system-ui, sans-serif;
+  font-size: var(--step);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* the weave: a thread lattice, not a dot grid */
+.weave-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg,  var(--weave) 0 1px, transparent 1px 14px),
+    repeating-linear-gradient(90deg, var(--weave) 0 1px, transparent 1px 14px);
+  opacity: .30;
+  mask-image: radial-gradient(120% 80% at 50% 0%, #000 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(120% 80% at 50% 0%, #000 0%, transparent 72%);
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 0 clamp(1.1rem, 4vw, 2.5rem); }
+
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+
+.display {
+  font-family: "Anton", "Archivo Black", Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: .005em;
+  line-height: .96;
+  text-transform: uppercase;
+}
+
+.label {
+  font-family: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+  font-size: .74rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin: 0;
+}
+
+.lede { font-size: clamp(1.12rem, 1rem + 0.5vw, 1.3rem); color: var(--ink-soft); max-width: var(--measure); }
+
+p { max-width: var(--measure); }
+
+a { color: var(--thread-soft); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+/* running-stitch divider */
+.stitch {
+  height: 1px;
+  border: 0;
+  background-image: linear-gradient(90deg, var(--line) 0 8px, transparent 8px 16px);
+  background-size: 16px 1px;
+  margin: 0;
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 0 1.1rem;
+}
+.mark {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: "Anton", sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.mark svg { display: block; }
+.theme-toggle {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: .4rem .7rem;
+  cursor: pointer;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink-faint); }
+
+.hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); }
+.hero h1 { font-size: clamp(2.7rem, 1.4rem + 6.2vw, 5.6rem); margin-bottom: 1.25rem; }
+.hero h1 .thread { color: var(--thread); }
+.hero .lede { margin: 0 0 2rem; }
+
+.badge-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
+.badge {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: .3rem .6rem;
+  background: var(--surface);
+}
+.badge.live { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+
+.signup {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--thread);
+  padding: 1.4rem 1.5rem 1.5rem;
+  max-width: 560px;
+  box-shadow: var(--shadow);
+}
+.signup h2 { font-family: "Archivo", sans-serif; font-size: 1.05rem; font-weight: 600; margin-bottom: .35rem; text-transform: none; }
+.signup p { font-size: .92rem; color: var(--ink-soft); margin: 0 0 1rem; }
+.signup-row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.signup input[type="email"] {
+  flex: 1 1 240px;
+  min-width: 0;
+  font: inherit;
+  font-size: .95rem;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: .7rem .8rem;
+}
+.signup input[type="email"]::placeholder { color: var(--ink-faint); }
+.signup input[type="email"]:focus-visible,
+.theme-toggle:focus-visible,
+button:focus-visible,
+a:focus-visible { outline: 2px solid var(--thread); outline-offset: 2px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.btn {
+  font-family: "Archivo", sans-serif;
+  font-weight: 600;
+  font-size: .95rem;
+  color: #FFF6F4;
+  background: var(--thread);
+  border: 1px solid var(--thread);
+  border-radius: 2px;
+  padding: .7rem 1.15rem;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.btn:hover { background: var(--thread-soft); border-color: var(--thread-soft); }
+.btn[disabled] { opacity: .6; cursor: progress; }
+
+.form-note { font-size: .82rem; color: var(--ink-faint); margin: .8rem 0 0; }
+.form-msg { font-size: .9rem; margin: .9rem 0 0; display: none; }
+.form-msg.show { display: block; }
+.form-msg.ok { color: var(--ok); }
+.form-msg.warn { color: var(--thread-soft); }
+
+section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
+.sec-head { margin-bottom: 2rem; }
+.sec-head h2 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem); margin: .5rem 0 .8rem; }
+
+.stack-compare { display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: stretch; }
+@media (min-width: 760px) { .stack-compare { grid-template-columns: 1fr auto 1fr; } }
+
+.stack-col { padding: 1.25rem 1.35rem; border: 1px solid var(--line); background: var(--surface); }
+.stack-col h3 { font-family: "Archivo", sans-serif; font-size: .95rem; font-weight: 600; margin-bottom: .9rem; }
+.tool-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+.chip {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .74rem;
+  padding: .3rem .55rem;
+  border: 1px dashed var(--line);
+  color: var(--ink-soft);
+  background: var(--ground);
+}
+.stack-col p { font-size: .9rem; color: var(--ink-soft); margin: 0; max-width: none; }
+.arrow {
+  display: grid;
+  place-items: center;
+  font-family: "Anton", sans-serif;
+  font-size: 1.6rem;
+  color: var(--thread);
+}
+.stack-col.after { border-color: color-mix(in srgb, var(--thread) 45%, var(--line)); background: var(--thread-dim); }
+.one-line {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .78rem;
+  color: var(--ink);
+  line-height: 2;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.line-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.stage {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr;
+  gap: 0 1.2rem;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--line);
+  align-items: start;
+}
+.stage:last-child { border-bottom: 1px solid var(--line); }
+.stage-no {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .78rem;
+  color: var(--thread);
+  padding-top: .3rem;
+  letter-spacing: .06em;
+}
+.stage h3 { font-family: "Archivo", sans-serif; font-size: 1.18rem; font-weight: 600; margin-bottom: .35rem; }
+.stage p { font-size: .94rem; color: var(--ink-soft); margin: 0; }
+.gate {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .7rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--thread);
+  border: 1px solid color-mix(in srgb, var(--thread) 40%, transparent);
+  background: var(--thread-dim);
+  padding: .25rem .5rem;
+}
+
+.memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 0; }
+.mem-cell { background: var(--surface); padding: 1.1rem 1.15rem; }
+.mem-cell dt { font-family: "IBM Plex Mono", monospace; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--thread); margin-bottom: .4rem; }
+.mem-cell dd { margin: 0; font-size: .92rem; color: var(--ink-soft); }
+
+.status { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+@media (min-width: 820px) { .status { grid-template-columns: 1.1fr 1fr; gap: 2.5rem; } }
+.status ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.status li { display: grid; grid-template-columns: 1.6rem 1fr; gap: .6rem; font-size: .95rem; color: var(--ink-soft); align-items: start; }
+.status li b { color: var(--ink); font-weight: 600; }
+.tick { color: var(--ok); font-family: "IBM Plex Mono", monospace; }
+.cross { color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
+
+.note { border-left: 3px solid var(--thread); padding-left: 1.3rem; }
+.note p { font-size: 1.02rem; }
+.sign { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-faint); letter-spacing: .06em; }
+
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.plan { background: var(--surface); padding: 1.3rem 1.2rem; display: flex; flex-direction: column; gap: .45rem; }
+.plan.feature { background: var(--thread-dim); }
+.plan .name { font-family: "IBM Plex Mono", monospace; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.plan .price { font-family: "Anton", sans-serif; font-size: 2.1rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.plan .price span { font-family: "Archivo", sans-serif; font-size: .8rem; font-weight: 500; color: var(--ink-faint); }
+.plan .quota { font-size: .9rem; color: var(--ink-soft); }
+
+footer { padding: 2.5rem 0 3.5rem; color: var(--ink-faint); font-size: .85rem; }
+footer p { max-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="weave-bg" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="mark">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.5" fill="none" opacity=".35">
+          <path d="M1 6h20M1 11h20M1 16h20M6 1v20M11 1v20M16 1v20"/>
+        </g>
+        <path d="M2 17 L7 7 L12 15 L17 4" stroke="#D14539" stroke-width="2.2" fill="none"
+              stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 3"/>
+      </svg>
+      KANAVA
+    </div>
+    <button class="theme-toggle" id="themeBtn" type="button">Light</button>
+  </header>
+
+  <hr class="stitch">
+
+  <main>
+    <div class="hero">
+      <p class="label">Production line for faceless channels</p>
+      <h1 class="display">Every video<br>starts from zero.<br><span class="thread">Not here.</span></h1>
+      <p class="lede">
+        KANAVA is one line from topic to publish kit &mdash; script, scene visuals, voiceover,
+        render, titles and thumbnails &mdash; and it holds your channel's memory: your niche,
+        your style set, your voice, the topics you already covered and the ones you turned down.
+      </p>
+
+      <div class="badge-row">
+        <span class="badge live">v0 running</span>
+        <span class="badge">50 automated tests</span>
+        <span class="badge">Built by one person, in public</span>
+      </div>
+
+      <form class="signup" id="waitlist" novalidate>
+        <h2>Get the first invite wave</h2>
+        <p>20 people at a time, personally. No launch date promised &mdash; you get the weekly build log and the real production numbers either way.</p>
+        <div class="signup-row">
+          <label class="sr-only" for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          <button class="btn" type="submit">Join the waitlist</button>
+        </div>
+        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+        <p class="form-note">One email a week at most. Unsubscribe with one word back.</p>
+      </form>
+    </div>
+
+    <hr class="stitch">
+
+    <section>
+      <div class="sec-head">
+        <p class="label">The problem</p>
+        <h2 class="display">Six tools, one prayer</h2>
+        <p class="lede">Every faceless channel runs the same duct-taped stack. None of those tools know your channel, so every video begins with you re-explaining it.</p>
+      </div>
+
+      <div class="stack-compare">
+        <div class="stack-col">
+          <h3>Today</h3>
+          <div class="tool-chips">
+            <span class="chip">chat model</span>
+            <span class="chip">image model</span>
+            <span class="chip">tts</span>
+            <span class="chip">subtitle tool</span>
+            <span class="chip">editor</span>
+            <span class="chip">thumbnail tool</span>
+            <span class="chip">spreadsheet</span>
+          </div>
+          <p>Copy-paste between tabs, style drift between videos, no memory of what you already published. My own count: <b>3&ndash;8 hours per video.</b></p>
+        </div>
+        <div class="arrow" aria-hidden="true">&rarr;</div>
+        <div class="stack-col after">
+          <h3>With KANAVA</h3>
+          <p class="one-line">topic &rarr; script &rarr; visuals + voice &rarr; render &rarr; publish kit</p>
+          <p>One flow, four places where you say yes, and a channel profile that feeds every step. Target: <b>under 30 minutes per video</b> &mdash; measured on my own channel, published weekly.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="stitch">
+
+    <section>
+      <div class="sec-head">
+        <p class="label">The line</p>
+        <h2 class="display">Five stages, four stops</h2>
+        <p class="lede">It is a production line, not an autopilot. Nothing moves to the next stage without you.</p>
+      </div>
+
+      <ol class="line-list">
+        <li class="stage">
+          <div class="stage-no">01</div>
+          <div>
+            <h3>Topic</h3>
+            <p>Ten candidates in your niche &mdash; title, angle, and why it should land &mdash; checked against everything your channel already published. A topic you reject never comes back, and the reason feeds the next round.</p>
+            <span class="gate">You pick one</span>
+          </div>
+        </li>
+        <li class="stage">
+          <div class="stage-no">02</div>
+          <div>
+            <h3>Script</h3>
+            <p>Scene by scene &mdash; hook, body, CTA &mdash; in your channel's tone and length format. Edit any scene inline, regenerate a single scene without touching the rest.</p>
+            <span class="gate">You approve the script</span>
+          </div>
+        </li>
+        <li class="stage">
+          <div class="stage-no">03</div>
+          <div>
+            <h3>Visuals + voice</h3>
+            <p>A prompt and an image per scene, held to your style set; your voice reads the script with per-scene timing and a pronunciation dictionary. Regenerate one scene, regenerate the batch, or drop in your own image.</p>
+            <span class="gate">You sign off scene by scene</span>
+          </div>
+        </li>
+        <li class="stage">
+          <div class="stage-no">04</div>
+          <div>
+            <h3>Render</h3>
+            <p>16:9 or 9:16, word-level subtitles with optional karaoke burn-in. The queue shows progress, and a failed render resumes from the scene it died on instead of starting over.</p>
+          </div>
+        </li>
+        <li class="stage">
+          <div class="stage-no">05</div>
+          <div>
+            <h3>Publish kit</h3>
+            <p>Three title variants, description, tags, three thumbnails, a pinned-comment suggestion and a publish-time suggestion. Download the mp4, the SRT, the images and the text.</p>
+            <span class="gate">You ship it</span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <hr class="stitch">
+
+    <section>
+      <div class="sec-head">
+        <p class="label">The difference</p>
+        <h2 class="display">Channel memory</h2>
+        <p class="lede">The reason video 40 looks like video 1 &mdash; and doesn't repeat it. Set once in a four-step wizard, then fed into every stage of every video.</p>
+      </div>
+
+      <dl class="memory-grid">
+        <div class="mem-cell"><dt>Niche + audience</dt><dd>Who the channel is for, and the angle it takes on its subject.</dd></div>
+        <div class="mem-cell"><dt>Visual style set</dt><dd>Style, palette and composition rules &mdash; extractable from one to three of your own frames.</dd></div>
+        <div class="mem-cell"><dt>Voice</dt><dd>Pulled from your own TTS account, plus the pronunciation fixes your niche needs.</dd></div>
+        <div class="mem-cell"><dt>Length format</dt><dd>Long-form, Shorts, or both &mdash; the script is written to the target, not trimmed to it.</dd></div>
+        <div class="mem-cell"><dt>Intro / outro / CTA</dt><dd>Your recurring pattern, so the shape of the video stays yours.</dd></div>
+        <div class="mem-cell"><dt>Covered + rejected topics</dt><dd>What you already made, and what you said no to. Neither comes back as a suggestion.</dd></div>
+      </dl>
+    </section>
+
+    <hr class="stitch">
+
+    <section>
+      <div class="sec-head">
+        <p class="label">Where it actually is &middot; September 2026</p>
+        <h2 class="display">Built, not launched</h2>
+      </div>
+
+      <div class="status">
+        <ul>
+          <li><span class="tick">[x]</span><span><b>The full pipeline runs</b> &mdash; topic through publish kit, on my machine, with 50 automated tests behind it.</span></li>
+          <li><span class="tick">[x]</span><span><b>First video out of it:</b> 42 seconds, 1080p, with subtitles, three thumbnails and a publish kit.</span></li>
+          <li><span class="tick">[x]</span><span><b>It recovers from failure</b> &mdash; a dead render resumes; a project never becomes a dead end.</span></li>
+          <li><span class="cross">[ ]</span><span><b>No accounts, no billing, no hosted version yet.</b> That work starts once the production-time numbers hold up.</span></li>
+          <li><span class="cross">[ ]</span><span><b>No 30-day proof yet.</b> Next: running my own channel entirely on it and publishing every number, good or bad.</span></li>
+        </ul>
+        <div class="note">
+          <p>I run a faceless channel. I built this because my own workflow was six tools and a spreadsheet, and because nothing I paid for ever remembered what my channel was.</p>
+          <p>I would rather show a working thing with honest gaps than a launch page with invented numbers. If the 30-day run does not get production under 30 minutes, that gets published too.</p>
+          <p class="sign">&mdash; the founder, building in public</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="stitch">
+
+    <section>
+      <div class="sec-head">
+        <p class="label">Planned pricing &middot; not live yet</p>
+        <h2 class="display">Videos, not credits</h2>
+        <p class="lede">Credit maths is a way to hide the price. Your unit is a video, so that is the unit you buy &mdash; up to three scene regenerations included in each one.</p>
+      </div>
+
+      <div class="plans">
+        <div class="plan">
+          <span class="name">Free</span>
+          <span class="price">$0</span>
+          <span class="quota">1 watermarked video &middot; unlimited script drafts &middot; no card</span>
+        </div>
+        <div class="plan">
+          <span class="name">Starter</span>
+          <span class="price">$29<span> /mo</span></span>
+          <span class="quota">8 videos a month &middot; 1 channel</span>
+        </div>
+        <div class="plan feature">
+          <span class="name">Creator</span>
+          <span class="price">$59<span> /mo</span></span>
+          <span class="quota">20 videos a month &middot; 3 channels &middot; priority queue &middot; karaoke subtitles</span>
+        </div>
+        <div class="plan">
+          <span class="name">Studio</span>
+          <span class="price">$119<span> /mo</span></span>
+          <span class="quota">50 videos a month &middot; 10 channels &middot; 4 jobs at once</span>
+        </div>
+      </div>
+      <p class="form-note">Waitlist members get the launch price locked. No auto-charged overages &mdash; extra videos are bought on purpose or not at all.</p>
+    </section>
+
+    <hr class="stitch">
+
+    <section>
+      <div class="sec-head">
+        <p class="label">One more thing</p>
+        <h2 class="display">Watch it get built</h2>
+        <p class="lede">The weekly log is the pitch: real production times, real failures, real screens. Join the list and judge it on the numbers.</p>
+      </div>
+      <form class="signup" id="waitlist2" novalidate>
+        <h2>Join the waitlist</h2>
+        <p>Same list, same one-email-a-week promise.</p>
+        <div class="signup-row">
+          <label class="sr-only" for="email2">Email address</label>
+          <input type="email" id="email2" name="email" placeholder="you@example.com" autocomplete="email" required>
+          <button class="btn" type="submit">Join the waitlist</button>
+        </div>
+        <p class="form-msg" id="formMsg2" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <hr class="stitch">
+
+  <footer>
+    <p>KANAVA &mdash; a channel operating system for faceless creators. Built in public, one person, no outside money.</p>
+  </footer>
+</div>
+
+<script>
+/* CONFIG - paste your Google Form values here and the waitlist starts working.
+   1. Google Forms -> blank form -> one short-answer question "Email".
+   2. Send -> link icon -> copy the form URL.
+      formAction = that URL with "/viewform" replaced by "/formResponse"
+   3. Open the live form, right-click the email box -> Inspect ->
+      find name="entry.123456789"  ->  emailField = "entry.123456789"
+   Free, unlimited responses, answers land in a Google Sheet. */
+var CONFIG = {
+  formAction: "https://docs.google.com/forms/d/e/1FAIpQLSdUfrxO9JM7sswLL1KpbI6TZnYPpL7lT5jYQ7cS_r7gVkaIrA/formResponse",
+  emailField: "entry.1404606390"
+};
+
+(function () {
+  "use strict";
+
+  var btn = document.getElementById("themeBtn");
+  function currentIsDark() {
+    var stamped = document.documentElement.getAttribute("data-theme");
+    if (stamped) { return stamped === "dark"; }
+    return !window.matchMedia("(prefers-color-scheme: light)").matches;
+  }
+  function syncLabel() { btn.textContent = currentIsDark() ? "Light" : "Dark"; }
+  try {
+    var saved = localStorage.getItem("kanava-theme");
+    if (saved === "dark" || saved === "light") {
+      document.documentElement.setAttribute("data-theme", saved);
+    }
+  } catch (e) { /* storage blocked - system theme it is */ }
+  syncLabel();
+  btn.addEventListener("click", function () {
+    var next = currentIsDark() ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("kanava-theme", next); } catch (e) {}
+    syncLabel();
+  });
+
+  function wire(formId, msgId) {
+    var form = document.getElementById(formId);
+    if (!form) { return; }
+    var msg = document.getElementById(msgId);
+    var input = form.querySelector("input[type=email]");
+    var submit = form.querySelector("button");
+
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var value = (input.value || "").trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+        msg.className = "form-msg show warn";
+        msg.textContent = "That address does not look right - check it and try again.";
+        return;
+      }
+      if (!CONFIG.formAction || !CONFIG.emailField) {
+        msg.className = "form-msg show warn";
+        msg.textContent = "Waitlist form is not connected yet (set CONFIG.formAction and CONFIG.emailField).";
+        return;
+      }
+      submit.disabled = true;
+      var body = new FormData();
+      body.append(CONFIG.emailField, value);
+      fetch(CONFIG.formAction, { method: "POST", mode: "no-cors", body: body })
+        .then(function () {
+          form.querySelector(".signup-row").style.display = "none";
+          msg.className = "form-msg show ok";
+          msg.textContent = "You are on the list. First build log lands this week.";
+        })
+        .catch(function () {
+          submit.disabled = false;
+          msg.className = "form-msg show warn";
+          msg.textContent = "Could not reach the list. Try again in a minute.";
+        });
+    });
+  }
+  wire("waitlist", "formMsg");
+  wire("waitlist2", "formMsg2");
+})();
+</script>
+</body>
+</html>
