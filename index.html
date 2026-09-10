@@ -322,12 +322,19 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
 .plan .price { font-family: "Anton", sans-serif; font-size: 2.1rem; line-height: 1; font-variant-numeric: tabular-nums; }
 .plan .price span { font-family: "Archivo", sans-serif; font-size: .8rem; font-weight: 500; color: var(--ink-faint); }
 .plan .quota { font-size: .9rem; color: var(--ink-soft); }
+/* creators plan by upload schedule, not by monthly quota - lead with that */
+.plan .cadence { font-size: 1.02rem; font-weight: 600; line-height: 1.3; color: var(--ink); min-height: 2.6em; }
+.plan .per { font-family: "IBM Plex Mono", monospace; font-size: .74rem; letter-spacing: .04em; color: var(--thread); font-variant-numeric: tabular-nums; }
 
-/* quota rules: the part of pricing people actually distrust */
-.rules { list-style: none; margin: 1.8rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .55rem 2.2rem; }
-.rules li { position: relative; padding-left: 1.5rem; font-size: .92rem; color: var(--ink-soft); }
-.rules li::before { content: "\2014"; position: absolute; left: 0; top: 0; color: var(--thread); font-family: "IBM Plex Mono", monospace; }
-.rules b { color: var(--ink); font-weight: 600; }
+/* the quota rules, rewritten as what they are: promises */
+.promises { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem 2.2rem; margin-top: 2.4rem; }
+.promise { border-top: 1px solid var(--line); padding-top: 1rem; }
+.promise h3 { font-family: "Archivo", sans-serif; font-size: 1.04rem; font-weight: 600; margin-bottom: .35rem; }
+.promise p { font-size: .9rem; color: var(--ink-soft); margin: 0; }
+
+.perk { margin-top: 2.2rem; padding: 1rem 1.25rem; border-left: 3px solid var(--thread); background: var(--thread-dim); max-width: 760px; }
+.perk p { margin: 0; font-size: .95rem; color: var(--ink); max-width: none; }
+.perk p + p { margin-top: .3rem; font-size: .85rem; color: var(--ink-soft); }
 
 footer { padding: 2.5rem 0 3.5rem; color: var(--ink-faint); font-size: .85rem; }
 footer p { max-width: none; }
@@ -539,42 +546,63 @@ footer p { max-width: none; }
       <div class="sec-head">
         <p class="label">Planned pricing &middot; not live yet</p>
         <h2 class="display">Videos, not credits</h2>
-        <p class="lede">Credit maths is a way to hide the price. Your unit is a video, so that is the unit you buy &mdash; up to three scene regenerations included in each one.</p>
+        <p class="lede">Pick the plan that matches how often you upload. The price of one video is printed on the card &mdash; no credits to convert, no maths to do.</p>
       </div>
 
       <div class="plans">
         <div class="plan">
           <span class="name">Free</span>
+          <span class="cadence">Try it once</span>
           <span class="price">$0</span>
-          <span class="quota">1 watermarked video &middot; unlimited script drafts &middot; no card</span>
+          <span class="per">no card needed</span>
+          <span class="quota">1 full video, watermarked &middot; unlimited topic and script drafts</span>
         </div>
         <div class="plan">
           <span class="name">Starter</span>
+          <span class="cadence">About two uploads a week</span>
           <span class="price">$29<span> /mo</span></span>
+          <span class="per">$3.63 a video</span>
           <span class="quota">8 videos a month &middot; 1 channel</span>
         </div>
         <div class="plan feature">
           <span class="name">Creator</span>
+          <span class="cadence">One every weekday</span>
           <span class="price">$59<span> /mo</span></span>
+          <span class="per">$2.95 a video</span>
           <span class="quota">20 videos a month &middot; 3 channels &middot; priority queue &middot; karaoke subtitles</span>
         </div>
         <div class="plan">
           <span class="name">Studio</span>
+          <span class="cadence">A dozen a week, across channels</span>
           <span class="price">$119<span> /mo</span></span>
+          <span class="per">$2.38 a video</span>
           <span class="quota">50 videos a month &middot; 10 channels &middot; 4 jobs at once</span>
         </div>
       </div>
-      <p class="form-note">Need more in a month? A pack of 3 videos is $12, bought on purpose, never expires. Annual plans are 20% off.</p>
 
-      <ul class="rules" aria-label="How videos are counted">
-        <li><b>A video counts when its render finishes.</b> A failed render never counts. Up to three scene regenerations are part of the video.</li>
-        <li><b>Edit and re-render for free</b> &mdash; twice within seven days of the first render. Changing scenes is not a new video.</li>
-        <li><b>Shorts cut from a video you made here are free.</b> The work is already done; you only pay for videos made from scratch.</li>
-        <li><b>Nothing is auto-charged.</b> When the month's videos are used up, production pauses and you see one offer: upgrade, or buy a pack.</li>
-        <li><b>Pause for up to two months</b> at no cost. Your channel memory is kept for six.</li>
-        <li><b>Waitlist: your launch price is locked</b> for as long as you stay subscribed, and the first three months are 30% off.</li>
-        <li><b>14-day refund</b> on unused quota, no questions.</li>
-      </ul>
+      <div class="promises">
+        <div class="promise">
+          <h3>Failed renders are on us.</h3>
+          <p>A video counts only once it finishes. Three scene redos come with it, and you can fix it and re-render twice in the first week for free.</p>
+        </div>
+        <div class="promise">
+          <h3>Shorts from your videos are free.</h3>
+          <p>Cut vertical clips from any video you made here. You already paid for the work &mdash; you are not paying for it twice.</p>
+        </div>
+        <div class="promise">
+          <h3>No surprise bills. Ever.</h3>
+          <p>Reach your plan's limit and production pauses. You choose: move up a plan, or add 3 videos for $12 that never expire.</p>
+        </div>
+        <div class="promise">
+          <h3>Easy to leave, easy to come back.</h3>
+          <p>Pause free for up to two months. Your channel memory waits six. Unused videos are refunded within 14 days, no questions.</p>
+        </div>
+      </div>
+
+      <div class="perk">
+        <p><b>Joining the waitlist locks your launch price</b> for as long as you stay subscribed &mdash; and your first three months are 30% off.</p>
+        <p>Yearly plans are 20% off.</p>
+      </div>
     </section>
 
     <hr class="stitch">
