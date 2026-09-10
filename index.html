@@ -323,6 +323,12 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
 .plan .price span { font-family: "Archivo", sans-serif; font-size: .8rem; font-weight: 500; color: var(--ink-faint); }
 .plan .quota { font-size: .9rem; color: var(--ink-soft); }
 
+/* quota rules: the part of pricing people actually distrust */
+.rules { list-style: none; margin: 1.8rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .55rem 2.2rem; }
+.rules li { display: grid; grid-template-columns: 1.1rem 1fr; gap: .45rem; font-size: .92rem; color: var(--ink-soft); }
+.rules li::before { content: "\2014"; color: var(--thread); font-family: "IBM Plex Mono", monospace; }
+.rules b { color: var(--ink); font-weight: 600; }
+
 footer { padding: 2.5rem 0 3.5rem; color: var(--ink-faint); font-size: .85rem; }
 footer p { max-width: none; }
 
@@ -490,14 +496,14 @@ footer p { max-width: none; }
       <div class="sec-head">
         <p class="label">Starting from nothing</p>
         <h2 class="display">Video one is the hard one</h2>
-        <p class="lede">Channel memory is worth nothing on day one &mdash; there is no channel to remember yet. So the setup wizard builds one with you: four steps, about five minutes, and only the niche is required. Everything else starts on a default you can change later.</p>
+        <p class="lede">Channel memory is worth nothing on day one &mdash; there is no channel to remember yet. So the channel form does not start blank: every field comes with ready examples to pick from and an <em>Improve</em> button that tightens whatever you typed, with undo.</p>
       </div>
 
       <dl class="memory-grid">
-        <div class="mem-cell"><dt>Step 1 &middot; Niche</dt><dd>Twelve proven faceless niches as cards, or write your own. The one step you cannot skip.</dd></div>
-        <div class="mem-cell"><dt>Step 2 &middot; Format</dt><dd>Long-form, Shorts or both, and the length you are aiming at.</dd></div>
-        <div class="mem-cell"><dt>Step 3 &middot; Look and voice</dt><dd>Six visual styles, eight voices with three-second previews. Pick one, don't describe one.</dd></div>
-        <div class="mem-cell"><dt>Step 4 &middot; Name it</dt><dd>Channel name, and who it is for in one sentence. Ten topic candidates are waiting on the other side.</dd></div>
+        <div class="mem-cell"><dt>Niche</dt><dd>Six example niches as one-click chips, or write your own. The one field everything else hangs on.</dd></div>
+        <div class="mem-cell"><dt>Look</dt><dd>Seven illustration styles, six palettes, six compositions &mdash; pick a chip, and every frame of every video follows it.</dd></div>
+        <div class="mem-cell"><dt>Voice and language</dt><dd>Sixteen languages. Voices load from your own TTS account; without a key, four stock narrators get you through the first video.</dd></div>
+        <div class="mem-cell"><dt>Tone and sign-off</dt><dd>Six narrator tones and four closing-line patterns. Save the form and ten topic candidates are waiting on the other side.</dd></div>
       </dl>
 
       <p class="form-note">What it will not do: open the YouTube channel for you, or promise you a niche that makes money. It gets you from a blank page to a finished first video &mdash; the rest is the part only you can do.</p>
@@ -558,7 +564,17 @@ footer p { max-width: none; }
           <span class="quota">50 videos a month &middot; 10 channels &middot; 4 jobs at once</span>
         </div>
       </div>
-      <p class="form-note">Waitlist members get the launch price locked. No auto-charged overages &mdash; extra videos are bought on purpose or not at all.</p>
+      <p class="form-note">Need more in a month? A pack of 3 videos is $12, bought on purpose, never expires. Annual plans are 20% off.</p>
+
+      <ul class="rules" aria-label="How videos are counted">
+        <li><b>A video counts when its render finishes.</b> A failed render never counts. Up to three scene regenerations are part of the video.</li>
+        <li><b>Edit and re-render for free</b> &mdash; twice within seven days of the first render. Changing scenes is not a new video.</li>
+        <li><b>Shorts cut from a video you made here are free.</b> The work is already done; you only pay for videos made from scratch.</li>
+        <li><b>Nothing is auto-charged.</b> When the month's videos are used up, production pauses and you see one offer: upgrade, or buy a pack.</li>
+        <li><b>Pause for up to two months</b> at no cost. Your channel memory is kept for six.</li>
+        <li><b>Waitlist: your launch price is locked</b> for as long as you stay subscribed, and the first three months are 30% off.</li>
+        <li><b>14-day refund</b> on unused quota, no questions.</li>
+      </ul>
     </section>
 
     <hr class="stitch">
