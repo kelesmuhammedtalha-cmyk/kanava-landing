@@ -315,9 +315,14 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
 .note p { font-size: 1.02rem; }
 .sign { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-faint); letter-spacing: .06em; }
 
-.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+/* five options: 1 col on phones, 2x2 + a full-width pay-as-you-go row on tablets, 5 across on desktop */
+.plans { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+@media (min-width: 560px) { .plans { grid-template-columns: repeat(2, 1fr); } .plan.payg { grid-column: 1 / -1; } }
+@media (min-width: 980px) { .plans { grid-template-columns: repeat(5, 1fr); } .plan.payg { grid-column: auto; } }
 .plan { background: var(--surface); padding: 1.3rem 1.2rem; display: flex; flex-direction: column; gap: .45rem; }
 .plan.feature { background: var(--thread-dim); }
+/* not a subscription: sits on the page ground instead of a card surface */
+.plan.payg { background: var(--ground); }
 .plan .name { font-family: "IBM Plex Mono", monospace; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
 .plan .price { font-family: "Anton", sans-serif; font-size: 2.1rem; line-height: 1; font-variant-numeric: tabular-nums; }
 .plan .price span { font-family: "Archivo", sans-serif; font-size: .8rem; font-weight: 500; color: var(--ink-faint); }
@@ -548,7 +553,7 @@ footer p { max-width: none; }
       <div class="sec-head">
         <p class="label">Planned pricing &middot; not live yet</p>
         <h2 class="display">Videos, not credits</h2>
-        <p class="lede">Pick the plan that matches how often you upload. The price of one video is printed on the card &mdash; no credits to convert, no maths to do.</p>
+        <p class="lede">Pick the plan that matches how often you upload &mdash; or skip the plan and pay per video. The price of one video is always printed on the card: no credits to convert, no maths to do.</p>
       </div>
 
       <div class="plans">
@@ -580,6 +585,13 @@ footer p { max-width: none; }
           <span class="per">$2.38 a video</span>
           <span class="quota">50 videos a month &middot; 10 channels &middot; 4 jobs at once</span>
         </div>
+        <div class="plan payg">
+          <span class="name">Pay as you go</span>
+          <span class="cadence">Now and then</span>
+          <span class="price">$5<span> /video</span></span>
+          <span class="per">no subscription</span>
+          <span class="quota">Pay for each video when you make it &middot; 1 channel &middot; no watermark</span>
+        </div>
       </div>
 
       <div class="promises">
@@ -593,7 +605,7 @@ footer p { max-width: none; }
         </div>
         <div class="promise">
           <h3>No surprise bills. Ever.</h3>
-          <p>Reach your plan's limit and production pauses. You choose: move up a plan, or add 3 videos for $12 that never expire.</p>
+          <p>Reach your plan's limit and production pauses. You choose: move up a plan, or make the next video at $5.</p>
         </div>
         <div class="promise">
           <h3>Easy to leave, easy to come back.</h3>
