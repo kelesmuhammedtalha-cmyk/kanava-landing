@@ -179,8 +179,7 @@ a { color: var(--thread-soft); text-decoration-thickness: 1px; text-underline-of
 
 .signup {
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--thread);
+  border: 1px solid var(--ink-faint);
   padding: 1.4rem 1.5rem 1.5rem;
   max-width: 560px;
   box-shadow: var(--shadow);
@@ -254,7 +253,8 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
   font-size: 1.6rem;
   color: var(--thread);
 }
-.stack-col.after { border-color: color-mix(in srgb, var(--thread) 45%, var(--line)); background: var(--thread-dim); }
+/* red is for the button and the headline only - boxes stand out by a lifted surface, never a red wash */
+.stack-col.after { border-color: var(--ink-faint); background: var(--surface-2); }
 .one-line {
   font-family: "IBM Plex Mono", monospace;
   font-size: .78rem;
@@ -292,9 +292,9 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
   font-size: .72rem;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--thread);
-  border: 1px solid color-mix(in srgb, var(--thread) 40%, transparent);
-  background: var(--thread-dim);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  background: var(--surface);
   padding: .25rem .5rem;
 }
 
@@ -311,7 +311,7 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
 .tick { color: var(--ok); font-family: "IBM Plex Mono", monospace; }
 .cross { color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
 
-.note { border-left: 3px solid var(--thread); padding-left: 1.3rem; }
+.note { border-left: 3px solid var(--line); padding-left: 1.3rem; }
 .note p { font-size: 1.02rem; }
 .sign { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-faint); letter-spacing: .06em; }
 
@@ -320,7 +320,7 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
 @media (min-width: 560px) { .plans { grid-template-columns: repeat(2, 1fr); } .plan.payg { grid-column: 1 / -1; } }
 @media (min-width: 980px) { .plans { grid-template-columns: repeat(5, 1fr); } .plan.payg { grid-column: auto; } }
 .plan { background: var(--surface); padding: 1.3rem 1.2rem; display: flex; flex-direction: column; gap: .45rem; }
-.plan.feature { background: var(--thread-dim); }
+.plan.feature { background: var(--surface-2); box-shadow: inset 0 2px 0 var(--ink-soft); }
 /* not a subscription: sits on the page ground instead of a card surface */
 .plan.payg { background: var(--ground); }
 .plan .name { font-family: "IBM Plex Mono", monospace; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
@@ -339,7 +339,7 @@ section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
 .promise h3 { font-family: "Archivo", sans-serif; font-size: 1.04rem; font-weight: 600; margin-bottom: .35rem; }
 .promise p { font-size: .9rem; color: var(--ink-soft); margin: 0; }
 
-.perk { margin-top: 2.2rem; padding: 1rem 1.25rem; border-left: 3px solid var(--thread); background: var(--thread-dim); max-width: 760px; }
+.perk { margin-top: 2.2rem; padding: 1rem 1.25rem; border: 1px solid var(--ink-faint); background: var(--surface-2); max-width: 760px; }
 .perk p { margin: 0; font-size: .95rem; color: var(--ink); max-width: none; }
 .perk p + p { margin-top: .3rem; font-size: .85rem; color: var(--ink-soft); }
 
