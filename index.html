@@ -28,6 +28,8 @@
   --ok:          #6FBF8B;
   --shadow:      0 1px 0 rgba(255,255,255,.03), 0 18px 40px -28px rgba(0,0,0,.9);
 
+  --scheme:      dark;
+
   --step: clamp(1.05rem, 0.9rem + 0.7vw, 1.15rem);
   --measure: 62ch;
 }
@@ -47,6 +49,7 @@
     --thread-dim:  rgba(179, 53, 42, 0.10);
     --ok:          #2F7D51;
     --shadow:      0 1px 0 rgba(255,255,255,.7), 0 16px 34px -30px rgba(27,29,36,.45);
+    --scheme:      light;
   }
 }
 :root[data-theme="light"] {
@@ -63,6 +66,7 @@
   --thread-dim:  rgba(179, 53, 42, 0.10);
   --ok:          #2F7D51;
   --shadow:      0 1px 0 rgba(255,255,255,.7), 0 16px 34px -30px rgba(27,29,36,.45);
+  --scheme:      light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -159,22 +163,31 @@ a { color: var(--thread-soft); text-decoration-thickness: 1px; text-underline-of
 }
 .theme-toggle:hover { color: var(--ink); border-color: var(--ink-faint); }
 
-/* language switch: EN | TR segmented, same voice as the theme toggle */
+/* language menu: a small native select, same voice as the theme toggle; grows to more languages by adding an <option> */
 .controls { display: flex; align-items: center; gap: .5rem; }
-.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 2px; }
-.lang button {
+.lang {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: 0 .2rem 0 .55rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--ink-faint);
+}
+.lang:hover { color: var(--ink); border-color: var(--ink-faint); }
+.lang svg { display: block; flex: none; }
+.lang select {
   font-family: "IBM Plex Mono", monospace;
   font-size: .72rem;
-  letter-spacing: .12em;
-  color: var(--ink-faint);
-  background: none;
+  letter-spacing: .06em;
+  color: inherit;
+  background: transparent;
   border: 0;
-  padding: .4rem .6rem;
+  padding: .4rem .15rem;
   cursor: pointer;
+  color-scheme: var(--scheme);   /* the open list follows the page theme */
 }
-.lang button + button { border-left: 1px solid var(--line); }
-.lang button:hover { color: var(--ink); }
-.lang button[aria-pressed="true"] { color: var(--ink); background: var(--surface-2); }
+.lang select option { color: var(--ink); background: var(--surface); }
 
 .hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); }
 .hero h1 { font-size: clamp(2.7rem, 1.4rem + 6.2vw, 5.6rem); margin-bottom: 1.25rem; }
@@ -385,10 +398,17 @@ footer p { max-width: none; }
       KANAVA
     </div>
     <div class="controls">
-      <div class="lang" role="group" aria-label="Language" data-tr-aria-label="Dil">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="tr" aria-pressed="false">TR</button>
-      </div>
+      <label class="lang">
+        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M1.6 8h12.8M8 1.6c2.1 2.3 2.1 10.5 0 12.8M8 1.6c-2.1 2.3-2.1 10.5 0 12.8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span class="sr-only" data-tr="Dil">Language</span>
+        <select id="langSelect">
+          <option value="en">English</option>
+          <option value="tr">Türkçe</option>
+        </select>
+      </label>
       <button class="theme-toggle" id="themeBtn" type="button">Light</button>
     </div>
   </header>
@@ -688,7 +708,10 @@ var CONFIG = {
    English lives in the markup. Each translated element carries its Turkish
    next to it: data-tr (inner HTML), data-tr-placeholder, data-tr-aria-label.
    When you change English copy, change the data-tr beside it in the same edit.
-   Order: ?lang= in the URL > the visitor's last choice > browser language > English. */
+   English is the default. Another language only when asked for: ?lang= in the
+   URL, or the visitor's own earlier pick from the menu. The browser language
+   is deliberately not used. To add a language: an <option>, a STR entry, and
+   a data-xx attribute set. */
 var LANGS = ["en", "tr"];
 var STR = {
   en: {
@@ -747,7 +770,7 @@ var lang = "en";
 
   /* ---- language ---- */
   var originals = new Map();   // element -> { html, placeholder, ariaLabel } in English
-  var langBtns = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+  var langSelect = document.getElementById("langSelect");
 
   function pickInitialLang() {
     try {
@@ -758,10 +781,6 @@ var lang = "en";
       var s = localStorage.getItem("kanava-lang");
       if (s && LANGS.indexOf(s) > -1) { return s; }
     } catch (e) {}
-    var nav = navigator.languages || [navigator.language || ""];
-    for (var i = 0; i < nav.length; i++) {
-      if (/^tr\b/i.test(nav[i])) { return "tr"; }
-    }
     return "en";
   }
 
@@ -780,38 +799,41 @@ var lang = "en";
     lang = next;
     /* lang="tr" also makes CSS uppercase Turkish-correct (i -> İ, not I) */
     document.documentElement.lang = next;
-    var tr = next === "tr";
-    document.querySelectorAll("[data-tr]").forEach(function (el) {
-      var o = remember(el);
-      el.innerHTML = tr ? el.getAttribute("data-tr") : o.html;
+    /* every non-English language reads its own data-<code> attributes;
+       an element with no translation for the chosen language falls back to English */
+    var others = LANGS.filter(function (l) { return l !== "en"; });
+    function sel(suffix) {
+      return others.map(function (l) { return "[data-" + l + suffix + "]"; }).join(",");
+    }
+    function pick(el, suffix, english) {
+      if (next === "en") { return english; }
+      var t = el.getAttribute("data-" + next + suffix);
+      return t === null ? english : t;
+    }
+    document.querySelectorAll(sel("")).forEach(function (el) {
+      el.innerHTML = pick(el, "", remember(el).html);
     });
-    document.querySelectorAll("[data-tr-placeholder]").forEach(function (el) {
-      var o = remember(el);
-      el.setAttribute("placeholder", tr ? el.getAttribute("data-tr-placeholder") : o.placeholder);
+    document.querySelectorAll(sel("-placeholder")).forEach(function (el) {
+      el.setAttribute("placeholder", pick(el, "-placeholder", remember(el).placeholder));
     });
-    document.querySelectorAll("[data-tr-aria-label]").forEach(function (el) {
-      var o = remember(el);
-      el.setAttribute("aria-label", tr ? el.getAttribute("data-tr-aria-label") : o.ariaLabel);
+    document.querySelectorAll(sel("-aria-label")).forEach(function (el) {
+      el.setAttribute("aria-label", pick(el, "-aria-label", remember(el).ariaLabel));
     });
-    langBtns.forEach(function (b) {
-      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === next));
-    });
+    langSelect.value = next;
     syncLabel();
   }
 
-  langBtns.forEach(function (b) {
-    b.addEventListener("click", function () {
-      var next = b.getAttribute("data-lang");
-      if (next === lang) { return; }
-      applyLang(next);
-      try { localStorage.setItem("kanava-lang", next); } catch (e) {}
-      /* keep the choice in the address bar so a shared link opens in the same language */
-      try {
-        var url = new URL(window.location.href);
-        url.searchParams.set("lang", next);
-        window.history.replaceState(null, "", url.toString());
-      } catch (e) {}
-    });
+  langSelect.addEventListener("change", function () {
+    var next = langSelect.value;
+    if (next === lang || LANGS.indexOf(next) < 0) { return; }
+    applyLang(next);
+    try { localStorage.setItem("kanava-lang", next); } catch (e) {}
+    /* keep the choice in the address bar so a shared link opens in the same language */
+    try {
+      var url = new URL(window.location.href);
+      if (next === "en") { url.searchParams.delete("lang"); } else { url.searchParams.set("lang", next); }
+      window.history.replaceState(null, "", url.toString());
+    } catch (e) {}
   });
 
   applyLang(pickInitialLang());
