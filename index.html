@@ -159,6 +159,23 @@ a { color: var(--thread-soft); text-decoration-thickness: 1px; text-underline-of
 }
 .theme-toggle:hover { color: var(--ink); border-color: var(--ink-faint); }
 
+/* language switch: EN | TR segmented, same voice as the theme toggle */
+.controls { display: flex; align-items: center; gap: .5rem; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 2px; }
+.lang button {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  color: var(--ink-faint);
+  background: none;
+  border: 0;
+  padding: .4rem .6rem;
+  cursor: pointer;
+}
+.lang button + button { border-left: 1px solid var(--line); }
+.lang button:hover { color: var(--ink); }
+.lang button[aria-pressed="true"] { color: var(--ink); background: var(--surface-2); }
+
 .hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); }
 .hero h1 { font-size: clamp(2.7rem, 1.4rem + 6.2vw, 5.6rem); margin-bottom: 1.25rem; }
 .hero h1 .thread { color: var(--thread); }
@@ -367,16 +384,22 @@ footer p { max-width: none; }
       </svg>
       KANAVA
     </div>
-    <button class="theme-toggle" id="themeBtn" type="button">Light</button>
+    <div class="controls">
+      <div class="lang" role="group" aria-label="Language" data-tr-aria-label="Dil">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+      </div>
+      <button class="theme-toggle" id="themeBtn" type="button">Light</button>
+    </div>
   </header>
 
   <hr class="stitch">
 
   <main>
     <div class="hero">
-      <p class="label">Production line for YouTube videos</p>
-      <h1 class="display">Everything<br>but the<br><span class="thread">upload button.</span></h1>
-      <p class="lede">
+      <p class="label" data-tr="YouTube videoları için üretim hattı">Production line for YouTube videos</p>
+      <h1 class="display" data-tr="Her şey.<br><span class='thread'>Yükle butonu</span><br>hariç.">Everything<br>but the<br><span class="thread">upload button.</span></h1>
+      <p class="lede" data-tr="KANAVA'ya nişini söyle. Konuyu seninle birlikte seçer, senaryoyu yazar, her sahneyi çizer, seslendirmeyi okur ve videoyu hazırlar; sonra eline üç başlık, açıklama, etiketler, thumbnail'ler ve sabitlenecek bir yorum verir. Sen sadece yükle'ye basarsın. Üstelik kanalını hatırlar: 40. video da 1. video gibi görünür.">
         Tell KANAVA your niche. It picks the topic with you, writes the script, draws every scene,
         records the voiceover and renders the video &mdash; then hands you three titles, the description,
         tags, thumbnails and a pinned comment. You press upload. And it remembers your channel,
@@ -384,21 +407,21 @@ footer p { max-width: none; }
       </p>
 
       <div class="badge-row">
-        <span class="badge live">v0 running</span>
-        <span class="badge">50 automated tests</span>
-        <span class="badge">Built by one person, in public</span>
+        <span class="badge live" data-tr="v0 çalışıyor">v0 running</span>
+        <span class="badge" data-tr="50 otomatik test">50 automated tests</span>
+        <span class="badge" data-tr="Tek kişi, herkesin gözü önünde">Built by one person, in public</span>
       </div>
 
       <form class="signup" id="waitlist" novalidate>
-        <h2>Get the first invite wave</h2>
-        <p>20 people at a time, personally. The first 100 on the list get Creator for $40 a month for three months. No launch date promised &mdash; you get the weekly build log and the real production numbers either way.</p>
+        <h2 data-tr="İlk davet dalgasına katıl">Get the first invite wave</h2>
+        <p data-tr="Her seferinde 20 kişi, tek tek davet. Listedeki ilk 100 kişi Creator'ı üç ay boyunca ayda $40'a alır. Lansman tarihi sözü yok; her durumda haftalık geliştirme günlüğünü ve gerçek üretim sürelerini alırsın.">20 people at a time, personally. The first 100 on the list get Creator for $40 a month for three months. No launch date promised &mdash; you get the weekly build log and the real production numbers either way.</p>
         <div class="signup-row">
-          <label class="sr-only" for="email">Email address</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
-          <button class="btn" type="submit">Join the waitlist</button>
+          <label class="sr-only" for="email" data-tr="E-posta adresi">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" data-tr-placeholder="adin@ornek.com" autocomplete="email" required>
+          <button class="btn" type="submit" data-tr="Listeye katıl">Join the waitlist</button>
         </div>
         <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
-        <p class="form-note">One email a week at most. Unsubscribe with one word back.</p>
+        <p class="form-note" data-tr="Haftada en fazla bir e-posta. Çıkmak için tek kelime yazman yeterli.">One email a week at most. Unsubscribe with one word back.</p>
       </form>
     </div>
 
@@ -406,30 +429,30 @@ footer p { max-width: none; }
 
     <section>
       <div class="sec-head">
-        <p class="label">The problem</p>
-        <h2 class="display">Six tools, one prayer</h2>
-        <p class="lede">Making a narrated video today means running the same duct-taped stack. None of those tools know your channel, so every video begins with you re-explaining it.</p>
+        <p class="label" data-tr="Sorun">The problem</p>
+        <h2 class="display" data-tr="Altı araç, bir dua">Six tools, one prayer</h2>
+        <p class="lede" data-tr="Bugün anlatımlı bir video yapmak, hep aynı yamalı araç yığınını çalıştırmak demek. Bu araçların hiçbiri kanalını tanımıyor; her video, kanalını baştan anlatmanla başlıyor.">Making a narrated video today means running the same duct-taped stack. None of those tools know your channel, so every video begins with you re-explaining it.</p>
       </div>
 
       <div class="stack-compare">
         <div class="stack-col">
-          <h3>Today</h3>
+          <h3 data-tr="Bugün">Today</h3>
           <div class="tool-chips">
-            <span class="chip">chat model</span>
-            <span class="chip">image model</span>
-            <span class="chip">tts</span>
-            <span class="chip">subtitle tool</span>
-            <span class="chip">editor</span>
-            <span class="chip">thumbnail tool</span>
-            <span class="chip">spreadsheet</span>
+            <span class="chip" data-tr="sohbet modeli">chat model</span>
+            <span class="chip" data-tr="görsel modeli">image model</span>
+            <span class="chip" data-tr="seslendirme">tts</span>
+            <span class="chip" data-tr="altyazı aracı">subtitle tool</span>
+            <span class="chip" data-tr="kurgu programı">editor</span>
+            <span class="chip" data-tr="thumbnail aracı">thumbnail tool</span>
+            <span class="chip" data-tr="tablo">spreadsheet</span>
           </div>
-          <p>Copy-paste between tabs, style drift between videos, no memory of what you already published. My own count: <b>3&ndash;8 hours per video.</b></p>
+          <p data-tr="Sekmeler arası kopyala-yapıştır, videodan videoya kayan stil, daha önce ne yayınladığını hatırlamayan araçlar. Benim kendi hesabım: <b>video başına 3–8 saat.</b>">Copy-paste between tabs, style drift between videos, no memory of what you already published. My own count: <b>3&ndash;8 hours per video.</b></p>
         </div>
         <div class="arrow" aria-hidden="true">&rarr;</div>
         <div class="stack-col after">
-          <h3>With KANAVA</h3>
-          <p class="one-line">topic &rarr; script &rarr; visuals + voice &rarr; render &rarr; publish kit</p>
-          <p>One flow, four places where you say yes, and a channel profile that feeds every step. Target: <b>under 30 minutes per video</b> &mdash; measured on my own channel, published weekly.</p>
+          <h3 data-tr="KANAVA ile">With KANAVA</h3>
+          <p class="one-line" data-tr="konu → senaryo → görsel + ses → montaj → yayın paketi">topic &rarr; script &rarr; visuals + voice &rarr; render &rarr; publish kit</p>
+          <p data-tr="Tek akış, onay verdiğin dört durak ve her adımı besleyen bir kanal profili. Hedef: <b>video başına 30 dakikanın altı</b>; kendi kanalımda ölçülüp her hafta paylaşılıyor.">One flow, four places where you say yes, and a channel profile that feeds every step. Target: <b>under 30 minutes per video</b> &mdash; measured on my own channel, published weekly.</p>
         </div>
       </div>
     </section>
@@ -438,49 +461,49 @@ footer p { max-width: none; }
 
     <section>
       <div class="sec-head">
-        <p class="label">The line</p>
-        <h2 class="display">Five stages, four stops</h2>
-        <p class="lede">It is a production line, not an autopilot. Nothing moves to the next stage without you.</p>
+        <p class="label" data-tr="Üretim hattı">The line</p>
+        <h2 class="display" data-tr="Beş aşama, dört durak">Five stages, four stops</h2>
+        <p class="lede" data-tr="Bu bir üretim hattı, otomatik pilot değil. Sen onaylamadan hiçbir şey bir sonraki aşamaya geçmez.">It is a production line, not an autopilot. Nothing moves to the next stage without you.</p>
       </div>
 
       <ol class="line-list">
         <li class="stage">
           <div class="stage-no">01</div>
           <div>
-            <h3>Topic</h3>
-            <p>Ten candidates in your niche &mdash; title, angle, and why it should land &mdash; checked against everything your channel already published. A topic you reject never comes back, and the reason feeds the next round.</p>
-            <span class="gate">You pick one</span>
+            <h3 data-tr="Konu">Topic</h3>
+            <p data-tr="Nişinde on aday: başlık, açı ve neden tutacağı. Hepsi kanalının daha önce yayınladığı her şeyle karşılaştırılır. Reddettiğin konu bir daha gelmez; ret sebebin de bir sonraki turu besler.">Ten candidates in your niche &mdash; title, angle, and why it should land &mdash; checked against everything your channel already published. A topic you reject never comes back, and the reason feeds the next round.</p>
+            <span class="gate" data-tr="Birini sen seçersin">You pick one</span>
           </div>
         </li>
         <li class="stage">
           <div class="stage-no">02</div>
           <div>
-            <h3>Script</h3>
-            <p>Scene by scene &mdash; hook, body, CTA &mdash; in your channel's tone and length format. Edit any scene inline, regenerate a single scene without touching the rest.</p>
-            <span class="gate">You approve the script</span>
+            <h3 data-tr="Senaryo">Script</h3>
+            <p data-tr="Sahne sahne (açılış kancası, gövde, kapanış çağrısı), kanalının tonunda ve süre formatında. Her sahneyi yerinde düzenle, diğerlerine dokunmadan tek bir sahneyi yeniden yazdır.">Scene by scene &mdash; hook, body, CTA &mdash; in your channel's tone and length format. Edit any scene inline, regenerate a single scene without touching the rest.</p>
+            <span class="gate" data-tr="Senaryoyu sen onaylarsın">You approve the script</span>
           </div>
         </li>
         <li class="stage">
           <div class="stage-no">03</div>
           <div>
-            <h3>Visuals + voice</h3>
-            <p>A prompt and an image per scene, held to your style set; your chosen voice reads each scene, with word-level timing for the subtitles. Not happy with a scene? Regenerate just that one.</p>
-            <span class="gate">You sign off scene by scene</span>
+            <h3 data-tr="Görsel + ses">Visuals + voice</h3>
+            <p data-tr="Her sahne için bir prompt ve bir görsel, stil setine sadık; seçtiğin ses her sahneyi okur, altyazılar için kelime kelime zamanlanır. Bir sahneyi beğenmedin mi? Sadece onu yeniden üret.">A prompt and an image per scene, held to your style set; your chosen voice reads each scene, with word-level timing for the subtitles. Not happy with a scene? Regenerate just that one.</p>
+            <span class="gate" data-tr="Sahne sahne sen onaylarsın">You sign off scene by scene</span>
           </div>
         </li>
         <li class="stage">
           <div class="stage-no">04</div>
           <div>
-            <h3>Render</h3>
-            <p>16:9 or 9:16, word-level subtitles with optional karaoke burn-in. The queue shows progress, and a failed render resumes from the scene it died on instead of starting over.</p>
+            <h3 data-tr="Montaj">Render</h3>
+            <p data-tr="16:9 ya da 9:16, kelime kelime altyazı, istersen karaoke stili videoya gömülü. Kuyrukta ilerlemeyi görürsün; yarıda kalan bir montaj baştan başlamaz, kaldığı sahneden devam eder.">16:9 or 9:16, word-level subtitles with optional karaoke burn-in. The queue shows progress, and a failed render resumes from the scene it died on instead of starting over.</p>
           </div>
         </li>
         <li class="stage">
           <div class="stage-no">05</div>
           <div>
-            <h3>Publish kit</h3>
-            <p>Three title variants, description, tags, three thumbnails, a pinned-comment suggestion and a publish-time suggestion. Download the mp4, the SRT, the images and the text.</p>
-            <span class="gate">You ship it</span>
+            <h3 data-tr="Yayın paketi">Publish kit</h3>
+            <p data-tr="Üç başlık seçeneği, açıklama, etiketler, üç thumbnail, sabitlenecek yorum önerisi ve yayın saati önerisi. mp4'ü, SRT'yi, görselleri ve metinleri indir.">Three title variants, description, tags, three thumbnails, a pinned-comment suggestion and a publish-time suggestion. Download the mp4, the SRT, the images and the text.</p>
+            <span class="gate" data-tr="Yayınlayan sensin">You ship it</span>
           </div>
         </li>
       </ol>
@@ -490,18 +513,18 @@ footer p { max-width: none; }
 
     <section>
       <div class="sec-head">
-        <p class="label">The difference</p>
-        <h2 class="display">Channel memory</h2>
-        <p class="lede">You describe your channel once, and every stage of every video reads from it &mdash; that is what keeps the look steady and the topics fresh.</p>
+        <p class="label" data-tr="Fark">The difference</p>
+        <h2 class="display" data-tr="Kanal hafızası">Channel memory</h2>
+        <p class="lede" data-tr="Kanalını bir kez anlatırsın, her videonun her aşaması oradan okur. Görünümü sabit, konuları taze tutan şey bu.">You describe your channel once, and every stage of every video reads from it &mdash; that is what keeps the look steady and the topics fresh.</p>
       </div>
 
       <dl class="memory-grid">
-        <div class="mem-cell"><dt>Niche + audience</dt><dd>Who the channel is for, and the angle it takes on its subject.</dd></div>
-        <div class="mem-cell"><dt>Visual style set</dt><dd>Illustration style, palette and composition &mdash; every frame of every video follows them.</dd></div>
-        <div class="mem-cell"><dt>Voice</dt><dd>Loaded from your own ElevenLabs account, so every video has the same narrator.</dd></div>
-        <div class="mem-cell"><dt>Length format</dt><dd>Long-form, Shorts, or both &mdash; the script is written to the target, not trimmed to it.</dd></div>
-        <div class="mem-cell"><dt>Intro / outro / CTA</dt><dd>Your recurring pattern, so the shape of the video stays yours.</dd></div>
-        <div class="mem-cell"><dt>Covered + rejected topics</dt><dd>What you already made, and what you said no to. Neither comes back as a suggestion.</dd></div>
+        <div class="mem-cell"><dt data-tr="Niş + kitle">Niche + audience</dt><dd data-tr="Kanalın kimin için olduğu ve konusuna hangi açıdan baktığı.">Who the channel is for, and the angle it takes on its subject.</dd></div>
+        <div class="mem-cell"><dt data-tr="Görsel stil seti">Visual style set</dt><dd data-tr="Çizim stili, renk paleti ve kompozisyon; her videonun her karesi bunlara uyar.">Illustration style, palette and composition &mdash; every frame of every video follows them.</dd></div>
+        <div class="mem-cell"><dt data-tr="Ses">Voice</dt><dd data-tr="Kendi ElevenLabs hesabından yüklenir; her videoda aynı anlatıcı.">Loaded from your own ElevenLabs account, so every video has the same narrator.</dd></div>
+        <div class="mem-cell"><dt data-tr="Süre formatı">Length format</dt><dd data-tr="Uzun video, Shorts ya da ikisi. Senaryo sonradan kırpılmaz, baştan o süreye göre yazılır.">Long-form, Shorts, or both &mdash; the script is written to the target, not trimmed to it.</dd></div>
+        <div class="mem-cell"><dt data-tr="Giriş / kapanış / çağrı">Intro / outro / CTA</dt><dd data-tr="Tekrarlayan kalıbın; videonun şekli hep senin kalır.">Your recurring pattern, so the shape of the video stays yours.</dd></div>
+        <div class="mem-cell"><dt data-tr="İşlenmiş + reddedilmiş konular">Covered + rejected topics</dt><dd data-tr="Yaptıkların ve hayır dediklerin. İkisi de bir daha öneri olarak gelmez.">What you already made, and what you said no to. Neither comes back as a suggestion.</dd></div>
       </dl>
     </section>
 
@@ -509,41 +532,41 @@ footer p { max-width: none; }
 
     <section>
       <div class="sec-head">
-        <p class="label">Starting from nothing</p>
-        <h2 class="display">Video one is the hard one</h2>
-        <p class="lede">Channel memory is worth nothing on day one &mdash; there is no channel to remember yet. So the channel form does not start blank: every field comes with ready examples to pick from and an <em>Improve</em> button that tightens whatever you typed, with undo.</p>
+        <p class="label" data-tr="Sıfırdan başlamak">Starting from nothing</p>
+        <h2 class="display" data-tr="Asıl zor olan ilk video">Video one is the hard one</h2>
+        <p class="lede" data-tr="İlk gün kanal hafızasının bir değeri yok, çünkü hatırlanacak bir kanal henüz yok. Bu yüzden kanal formu boş başlamaz: her alanda seçebileceğin hazır örnekler ve yazdığını toparlayan, geri alınabilen bir <em>İyileştir</em> butonu var.">Channel memory is worth nothing on day one &mdash; there is no channel to remember yet. So the channel form does not start blank: every field comes with ready examples to pick from and an <em>Improve</em> button that tightens whatever you typed, with undo.</p>
       </div>
 
       <dl class="memory-grid">
-        <div class="mem-cell"><dt>Niche</dt><dd>Six example niches as one-click chips, or write your own. The one field everything else hangs on.</dd></div>
-        <div class="mem-cell"><dt>Look</dt><dd>Seven illustration styles, six palettes, six compositions &mdash; pick a chip, and every frame of every video follows it.</dd></div>
-        <div class="mem-cell"><dt>Voice and language</dt><dd>Sixteen languages. Voices load from your own TTS account; without a key, four stock narrators get you through the first video.</dd></div>
-        <div class="mem-cell"><dt>Tone and sign-off</dt><dd>Six narrator tones and four closing-line patterns. Save the form and ten topic candidates are waiting on the other side.</dd></div>
+        <div class="mem-cell"><dt data-tr="Niş">Niche</dt><dd data-tr="Tek tıkla seçilen altı örnek niş ya da kendi yazdığın. Her şeyin bağlı olduğu tek alan.">Six example niches as one-click chips, or write your own. The one field everything else hangs on.</dd></div>
+        <div class="mem-cell"><dt data-tr="Görünüm">Look</dt><dd data-tr="Yedi çizim stili, altı palet, altı kompozisyon. Birini seç, her videonun her karesi ona uysun.">Seven illustration styles, six palettes, six compositions &mdash; pick a chip, and every frame of every video follows it.</dd></div>
+        <div class="mem-cell"><dt data-tr="Ses ve dil">Voice and language</dt><dd data-tr="On altı dil. Sesler kendi seslendirme hesabından yüklenir; anahtar yoksa ilk videoyu dört hazır anlatıcıyla çıkarırsın.">Sixteen languages. Voices load from your own TTS account; without a key, four stock narrators get you through the first video.</dd></div>
+        <div class="mem-cell"><dt data-tr="Ton ve kapanış">Tone and sign-off</dt><dd data-tr="Altı anlatıcı tonu ve dört kapanış cümlesi kalıbı. Formu kaydet; on konu adayı seni bekliyor olur.">Six narrator tones and four closing-line patterns. Save the form and ten topic candidates are waiting on the other side.</dd></div>
       </dl>
 
-      <p class="form-note">What it will not do: open the YouTube channel for you, or promise you a niche that makes money. It gets you from a blank page to a finished first video &mdash; the rest is the part only you can do.</p>
+      <p class="form-note" data-tr="Yapmayacağı şeyler: YouTube kanalını senin yerine açmaz, para kazandıracak bir niş vaat etmez. Seni boş sayfadan bitmiş ilk videoya taşır; gerisi sadece senin yapabileceğin kısım.">What it will not do: open the YouTube channel for you, or promise you a niche that makes money. It gets you from a blank page to a finished first video &mdash; the rest is the part only you can do.</p>
     </section>
 
     <hr class="stitch">
 
     <section>
       <div class="sec-head">
-        <p class="label">Where it actually is &middot; September 2026</p>
-        <h2 class="display">Built, not launched</h2>
+        <p class="label" data-tr="Gerçekte nerede · Eylül 2026">Where it actually is &middot; September 2026</p>
+        <h2 class="display" data-tr="Hazır, ama henüz açılmadı">Built, not launched</h2>
       </div>
 
       <div class="status">
         <ul>
-          <li><span class="tick">[x]</span><span><b>The full pipeline runs</b> &mdash; topic through publish kit, on my machine, with 50 automated tests behind it.</span></li>
-          <li><span class="tick">[x]</span><span><b>First video out of it:</b> 42 seconds, 1080p, with subtitles, three thumbnails and a publish kit.</span></li>
-          <li><span class="tick">[x]</span><span><b>It recovers from failure</b> &mdash; a dead render resumes; a project never becomes a dead end.</span></li>
-          <li><span class="cross">[ ]</span><span><b>No accounts, no billing, no hosted version yet.</b> That work starts once the production-time numbers hold up.</span></li>
-          <li><span class="cross">[ ]</span><span><b>No 30-day proof yet.</b> Next: running my own channel entirely on it and publishing every number, good or bad.</span></li>
+          <li><span class="tick">[x]</span><span data-tr="<b>Tüm hat çalışıyor</b>: konudan yayın paketine kadar, benim bilgisayarımda, arkasında 50 otomatik test."><b>The full pipeline runs</b> &mdash; topic through publish kit, on my machine, with 50 automated tests behind it.</span></li>
+          <li><span class="tick">[x]</span><span data-tr="<b>İlk videosu:</b> 42 saniye, 1080p, altyazılı, üç thumbnail ve yayın paketiyle."><b>First video out of it:</b> 42 seconds, 1080p, with subtitles, three thumbnails and a publish kit.</span></li>
+          <li><span class="tick">[x]</span><span data-tr="<b>Hatadan toparlanıyor</b>: yarıda kalan montaj kaldığı yerden devam eder; hiçbir proje çıkmaza girmez."><b>It recovers from failure</b> &mdash; a dead render resumes; a project never becomes a dead end.</span></li>
+          <li><span class="cross">[ ]</span><span data-tr="<b>Henüz hesap, ödeme ya da çevrimiçi sürüm yok.</b> O iş, üretim süresi rakamları tutunca başlıyor."><b>No accounts, no billing, no hosted version yet.</b> That work starts once the production-time numbers hold up.</span></li>
+          <li><span class="cross">[ ]</span><span data-tr="<b>30 günlük kanıt henüz yok.</b> Sıradaki: kendi kanalımı tamamen bununla işletip iyi kötü her rakamı paylaşmak."><b>No 30-day proof yet.</b> Next: running my own channel entirely on it and publishing every number, good or bad.</span></li>
         </ul>
         <div class="note">
-          <p>I run a YouTube channel of narrated, illustrated videos. I built this because my own workflow was six tools and a spreadsheet, and because nothing I paid for ever remembered what my channel was.</p>
-          <p>I would rather show a working thing with honest gaps than a launch page with invented numbers. If the 30-day run does not get production under 30 minutes, that gets published too.</p>
-          <p class="sign">&mdash; the founder, building in public</p>
+          <p data-tr="Anlatımlı, çizimli videolardan oluşan bir YouTube kanalım var. Bunu yaptım çünkü kendi iş akışım altı araç ve bir tablodan ibaretti, ve para verdiğim hiçbir araç kanalımın ne olduğunu hatırlamıyordu.">I run a YouTube channel of narrated, illustrated videos. I built this because my own workflow was six tools and a spreadsheet, and because nothing I paid for ever remembered what my channel was.</p>
+          <p data-tr="Uydurma rakamlarla dolu bir lansman sayfası yerine, dürüst eksikleriyle çalışan bir şey göstermeyi tercih ederim. 30 günlük deneme üretimi 30 dakikanın altına indiremezse, o da paylaşılacak.">I would rather show a working thing with honest gaps than a launch page with invented numbers. If the 30-day run does not get production under 30 minutes, that gets published too.</p>
+          <p class="sign" data-tr="— kurucu, herkesin gözü önünde geliştiriyor">&mdash; the founder, building in public</p>
         </div>
       </div>
     </section>
@@ -552,71 +575,71 @@ footer p { max-width: none; }
 
     <section>
       <div class="sec-head">
-        <p class="label">Planned pricing &middot; not live yet</p>
-        <h2 class="display">Videos, not credits</h2>
-        <p class="lede">Pick the plan that matches how often you upload &mdash; or skip the plan and pay per video. The price of one video is always printed on the card: no credits to convert, no maths to do.</p>
+        <p class="label" data-tr="Planlanan fiyatlar · henüz geçerli değil">Planned pricing &middot; not live yet</p>
+        <h2 class="display" data-tr="Kredi değil, video">Videos, not credits</h2>
+        <p class="lede" data-tr="Ne sıklıkla video yüklediğine uyan planı seç ya da plan almadan video başına öde. Bir videonun fiyatı her kartta yazıyor: çevrilecek kredi yok, yapılacak hesap yok.">Pick the plan that matches how often you upload &mdash; or skip the plan and pay per video. The price of one video is always printed on the card: no credits to convert, no maths to do.</p>
       </div>
 
       <div class="plans">
         <div class="plan">
-          <span class="name">Free</span>
-          <span class="cadence">Try it once</span>
+          <span class="name" data-tr="Ücretsiz">Free</span>
+          <span class="cadence" data-tr="Bir kez dene">Try it once</span>
           <span class="price">$0</span>
-          <span class="per">no card needed</span>
-          <span class="quota">1 full video, watermarked &middot; unlimited topic and script drafts</span>
+          <span class="per" data-tr="kart gerekmez">no card needed</span>
+          <span class="quota" data-tr="1 tam video, filigranlı · sınırsız konu ve senaryo taslağı">1 full video, watermarked &middot; unlimited topic and script drafts</span>
         </div>
         <div class="plan">
           <span class="name">Starter</span>
-          <span class="cadence">About two uploads a week</span>
-          <span class="price">$29<span> /mo</span></span>
-          <span class="per">$3.63 a video</span>
-          <span class="quota">8 videos a month &middot; 1 channel</span>
+          <span class="cadence" data-tr="Haftada yaklaşık iki yükleme">About two uploads a week</span>
+          <span class="price" data-tr="$29<span> /ay</span>">$29<span> /mo</span></span>
+          <span class="per" data-tr="video başı $3.63">$3.63 a video</span>
+          <span class="quota" data-tr="Ayda 8 video · 1 kanal">8 videos a month &middot; 1 channel</span>
         </div>
         <div class="plan feature">
           <span class="name">Creator</span>
-          <span class="cadence">One every weekday</span>
-          <span class="price">$59<span> /mo</span></span>
-          <span class="per">$2.95 a video</span>
-          <span class="quota">20 videos a month &middot; 3 channels &middot; priority queue &middot; karaoke subtitles</span>
+          <span class="cadence" data-tr="Hafta içi her gün bir video">One every weekday</span>
+          <span class="price" data-tr="$59<span> /ay</span>">$59<span> /mo</span></span>
+          <span class="per" data-tr="video başı $2.95">$2.95 a video</span>
+          <span class="quota" data-tr="Ayda 20 video · 3 kanal · öncelikli kuyruk · karaoke altyazı">20 videos a month &middot; 3 channels &middot; priority queue &middot; karaoke subtitles</span>
         </div>
         <div class="plan">
           <span class="name">Studio</span>
-          <span class="cadence">A dozen a week, across channels</span>
-          <span class="price">$119<span> /mo</span></span>
-          <span class="per">$2.38 a video</span>
-          <span class="quota">50 videos a month &middot; 10 channels &middot; 4 jobs at once</span>
+          <span class="cadence" data-tr="Kanallar arası haftada bir düzine">A dozen a week, across channels</span>
+          <span class="price" data-tr="$119<span> /ay</span>">$119<span> /mo</span></span>
+          <span class="per" data-tr="video başı $2.38">$2.38 a video</span>
+          <span class="quota" data-tr="Ayda 50 video · 10 kanal · aynı anda 4 iş">50 videos a month &middot; 10 channels &middot; 4 jobs at once</span>
         </div>
         <div class="plan payg">
-          <span class="name">Pay as you go</span>
-          <span class="cadence">Now and then</span>
+          <span class="name" data-tr="Kullandıkça öde">Pay as you go</span>
+          <span class="cadence" data-tr="Arada bir">Now and then</span>
           <span class="price">$5<span> /video</span></span>
-          <span class="per">no subscription</span>
-          <span class="quota">Pay for each video when you make it &middot; 1 channel &middot; no watermark</span>
+          <span class="per" data-tr="abonelik yok">no subscription</span>
+          <span class="quota" data-tr="Her videoyu yaparken öde · 1 kanal · filigran yok">Pay for each video when you make it &middot; 1 channel &middot; no watermark</span>
         </div>
       </div>
 
       <div class="promises">
         <div class="promise">
-          <h3>Failed renders are on us.</h3>
-          <p>A video counts only once it finishes. Three scene redos come with it, and you can fix it and re-render twice in the first week for free.</p>
+          <h3 data-tr="Başarısız montaj bizden.">Failed renders are on us.</h3>
+          <p data-tr="Bir video ancak bittiğinde sayılır. Üç sahne yenilemesi dahildir; ilk hafta içinde iki kez ücretsiz düzeltip yeniden hazırlatabilirsin.">A video counts only once it finishes. Three scene redos come with it, and you can fix it and re-render twice in the first week for free.</p>
         </div>
         <div class="promise">
-          <h3>Shorts from your videos are free.</h3>
-          <p>Cut vertical clips from any video you made here. You already paid for the work &mdash; you are not paying for it twice.</p>
+          <h3 data-tr="Kendi videondan Shorts bedava.">Shorts from your videos are free.</h3>
+          <p data-tr="Burada yaptığın herhangi bir videodan dikey klipler kes. O işin parasını zaten ödedin; iki kez ödemezsin.">Cut vertical clips from any video you made here. You already paid for the work &mdash; you are not paying for it twice.</p>
         </div>
         <div class="promise">
-          <h3>No surprise bills. Ever.</h3>
-          <p>Reach your plan's limit and production pauses. You choose: move up a plan, or make the next video at $5.</p>
+          <h3 data-tr="Sürpriz fatura yok. Asla.">No surprise bills. Ever.</h3>
+          <p data-tr="Planının sınırına gelince üretim durur. Sen seçersin: bir üst plana geç ya da sonraki videoyu $5'a yap.">Reach your plan's limit and production pauses. You choose: move up a plan, or make the next video at $5.</p>
         </div>
         <div class="promise">
-          <h3>Easy to leave, easy to come back.</h3>
-          <p>Pause free for up to two months. Your channel memory waits six. Unused videos are refunded within 14 days, no questions.</p>
+          <h3 data-tr="Bırakması kolay, dönmesi kolay.">Easy to leave, easy to come back.</h3>
+          <p data-tr="İki aya kadar ücretsiz dondur. Kanal hafızan altı ay bekler. Kullanılmayan videoların parası 14 gün içinde sorgusuz iade edilir.">Pause free for up to two months. Your channel memory waits six. Unused videos are refunded within 14 days, no questions.</p>
         </div>
       </div>
 
       <div class="perk">
-        <p><b>The first 100 on the waitlist get Creator for $40 a month</b> for their first three months. Then it is $59, locked for as long as you stay &mdash; with an email a week before the change and one click to switch to Starter instead.</p>
-        <p>Everyone on the waitlist gets their launch price locked. Yearly plans are 20% off.</p>
+        <p data-tr="<b>Bekleme listesindeki ilk 100 kişi Creator'ı ilk üç ay ayda $40'a alır.</b> Sonra $59 olur ve abonelik sürdükçe o fiyatta kilitli kalır; değişimden bir hafta önce e-posta gelir, istersen tek tıkla Starter'a geçersin."><b>The first 100 on the waitlist get Creator for $40 a month</b> for their first three months. Then it is $59, locked for as long as you stay &mdash; with an email a week before the change and one click to switch to Starter instead.</p>
+        <p data-tr="Bekleme listesindeki herkesin lansman fiyatı kilitlenir. Yıllık planlarda %20 indirim.">Everyone on the waitlist gets their launch price locked. Yearly plans are 20% off.</p>
       </div>
     </section>
 
@@ -624,17 +647,17 @@ footer p { max-width: none; }
 
     <section>
       <div class="sec-head">
-        <p class="label">One more thing</p>
-        <h2 class="display">Watch it get built</h2>
-        <p class="lede">The weekly log is the pitch: real production times, real failures, real screens. Join the list and judge it on the numbers.</p>
+        <p class="label" data-tr="Bir şey daha">One more thing</p>
+        <h2 class="display" data-tr="Nasıl yapıldığını izle">Watch it get built</h2>
+        <p class="lede" data-tr="Haftalık günlük, tanıtımın ta kendisi: gerçek üretim süreleri, gerçek hatalar, gerçek ekranlar. Listeye katıl, rakamlara bakarak karar ver.">The weekly log is the pitch: real production times, real failures, real screens. Join the list and judge it on the numbers.</p>
       </div>
       <form class="signup" id="waitlist2" novalidate>
-        <h2>Join the waitlist</h2>
-        <p>Same list, same one-email-a-week promise.</p>
+        <h2 data-tr="Listeye katıl">Join the waitlist</h2>
+        <p data-tr="Aynı liste, aynı haftada bir e-posta sözü.">Same list, same one-email-a-week promise.</p>
         <div class="signup-row">
-          <label class="sr-only" for="email2">Email address</label>
-          <input type="email" id="email2" name="email" placeholder="you@example.com" autocomplete="email" required>
-          <button class="btn" type="submit">Join the waitlist</button>
+          <label class="sr-only" for="email2" data-tr="E-posta adresi">Email address</label>
+          <input type="email" id="email2" name="email" placeholder="you@example.com" data-tr-placeholder="adin@ornek.com" autocomplete="email" required>
+          <button class="btn" type="submit" data-tr="Listeye katıl">Join the waitlist</button>
         </div>
         <p class="form-msg" id="formMsg2" role="status" aria-live="polite"></p>
       </form>
@@ -644,7 +667,7 @@ footer p { max-width: none; }
   <hr class="stitch">
 
   <footer>
-    <p>KANAVA &mdash; a production line for narrated YouTube videos. Built in public, one person, no outside money.</p>
+    <p data-tr="KANAVA: anlatımlı YouTube videoları için bir üretim hattı. Herkesin gözü önünde, tek kişi, dış yatırım olmadan geliştiriliyor.">KANAVA &mdash; a production line for narrated YouTube videos. Built in public, one person, no outside money.</p>
   </footer>
 </div>
 
@@ -661,23 +684,49 @@ var CONFIG = {
   emailField: "entry.1404606390"
 };
 
+/* LANGUAGES
+   English lives in the markup. Each translated element carries its Turkish
+   next to it: data-tr (inner HTML), data-tr-placeholder, data-tr-aria-label.
+   When you change English copy, change the data-tr beside it in the same edit.
+   Order: ?lang= in the URL > the visitor's last choice > browser language > English. */
+var LANGS = ["en", "tr"];
+var STR = {
+  en: {
+    light: "Light",
+    dark: "Dark",
+    badEmail: "That address does not look right - check it and try again.",
+    notConnected: "Waitlist form is not connected yet (set CONFIG.formAction and CONFIG.emailField).",
+    ok: "You are on the list. First build log lands this week.",
+    fail: "Could not reach the list. Try again in a minute."
+  },
+  tr: {
+    light: "Açık",
+    dark: "Koyu",
+    badEmail: "Bu adres doğru görünmüyor; kontrol edip tekrar dene.",
+    notConnected: "Bekleme listesi formu henüz bağlı değil.",
+    ok: "Listedesin. İlk geliştirme günlüğü bu hafta geliyor.",
+    fail: "Listeye ulaşılamadı. Bir dakika sonra tekrar dene."
+  }
+};
+var lang = "en";
+
 (function () {
   "use strict";
 
+  /* ---- theme ---- */
   var btn = document.getElementById("themeBtn");
   function currentIsDark() {
     var stamped = document.documentElement.getAttribute("data-theme");
     if (stamped) { return stamped === "dark"; }
     return !window.matchMedia("(prefers-color-scheme: light)").matches;
   }
-  function syncLabel() { btn.textContent = currentIsDark() ? "Light" : "Dark"; }
+  function syncLabel() { btn.textContent = currentIsDark() ? STR[lang].light : STR[lang].dark; }
   try {
     var saved = localStorage.getItem("kanava-theme");
     if (saved === "dark" || saved === "light") {
       document.documentElement.setAttribute("data-theme", saved);
     }
   } catch (e) { /* storage blocked - system theme it is */ }
-  syncLabel();
   btn.addEventListener("click", function () {
     var next = currentIsDark() ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
@@ -696,6 +745,78 @@ var CONFIG = {
   if (mq.addEventListener) { mq.addEventListener("change", syncLabel); }
   else if (mq.addListener) { mq.addListener(syncLabel); }
 
+  /* ---- language ---- */
+  var originals = new Map();   // element -> { html, placeholder, ariaLabel } in English
+  var langBtns = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+
+  function pickInitialLang() {
+    try {
+      var q = new URLSearchParams(window.location.search).get("lang");
+      if (q && LANGS.indexOf(q) > -1) { return q; }
+    } catch (e) {}
+    try {
+      var s = localStorage.getItem("kanava-lang");
+      if (s && LANGS.indexOf(s) > -1) { return s; }
+    } catch (e) {}
+    var nav = navigator.languages || [navigator.language || ""];
+    for (var i = 0; i < nav.length; i++) {
+      if (/^tr\b/i.test(nav[i])) { return "tr"; }
+    }
+    return "en";
+  }
+
+  function remember(el) {
+    if (!originals.has(el)) {
+      originals.set(el, {
+        html: el.innerHTML,
+        placeholder: el.getAttribute("placeholder"),
+        ariaLabel: el.getAttribute("aria-label")
+      });
+    }
+    return originals.get(el);
+  }
+
+  function applyLang(next) {
+    lang = next;
+    /* lang="tr" also makes CSS uppercase Turkish-correct (i -> İ, not I) */
+    document.documentElement.lang = next;
+    var tr = next === "tr";
+    document.querySelectorAll("[data-tr]").forEach(function (el) {
+      var o = remember(el);
+      el.innerHTML = tr ? el.getAttribute("data-tr") : o.html;
+    });
+    document.querySelectorAll("[data-tr-placeholder]").forEach(function (el) {
+      var o = remember(el);
+      el.setAttribute("placeholder", tr ? el.getAttribute("data-tr-placeholder") : o.placeholder);
+    });
+    document.querySelectorAll("[data-tr-aria-label]").forEach(function (el) {
+      var o = remember(el);
+      el.setAttribute("aria-label", tr ? el.getAttribute("data-tr-aria-label") : o.ariaLabel);
+    });
+    langBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === next));
+    });
+    syncLabel();
+  }
+
+  langBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var next = b.getAttribute("data-lang");
+      if (next === lang) { return; }
+      applyLang(next);
+      try { localStorage.setItem("kanava-lang", next); } catch (e) {}
+      /* keep the choice in the address bar so a shared link opens in the same language */
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set("lang", next);
+        window.history.replaceState(null, "", url.toString());
+      } catch (e) {}
+    });
+  });
+
+  applyLang(pickInitialLang());
+
+  /* ---- waitlist ---- */
   function wire(formId, msgId) {
     var form = document.getElementById(formId);
     if (!form) { return; }
@@ -708,12 +829,12 @@ var CONFIG = {
       var value = (input.value || "").trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
         msg.className = "form-msg show warn";
-        msg.textContent = "That address does not look right - check it and try again.";
+        msg.textContent = STR[lang].badEmail;
         return;
       }
       if (!CONFIG.formAction || !CONFIG.emailField) {
         msg.className = "form-msg show warn";
-        msg.textContent = "Waitlist form is not connected yet (set CONFIG.formAction and CONFIG.emailField).";
+        msg.textContent = STR[lang].notConnected;
         return;
       }
       submit.disabled = true;
@@ -723,12 +844,12 @@ var CONFIG = {
         .then(function () {
           form.querySelector(".signup-row").style.display = "none";
           msg.className = "form-msg show ok";
-          msg.textContent = "You are on the list. First build log lands this week.";
+          msg.textContent = STR[lang].ok;
         })
         .catch(function () {
           submit.disabled = false;
           msg.className = "form-msg show warn";
-          msg.textContent = "Could not reach the list. Try again in a minute.";
+          msg.textContent = STR[lang].fail;
         });
     });
   }
